@@ -1,5 +1,4 @@
 <?php
-
 namespace ByJG\ApiTools\Base;
 
 use ByJG\ApiTools\Exception\DefinitionNotFoundException;
@@ -15,21 +14,36 @@ use InvalidArgumentException;
 
 abstract class Schema
 {
+
     protected $jsonFile;
+
     protected $allowNullValues = false;
+
     protected $specificationVersion;
 
     const SWAGGER_PATHS = "paths";
+
     const SWAGGER_PARAMETERS = "parameters";
+
     const SWAGGER_COMPONENTS = "components";
 
     /**
      * Returns the major specification version
+     *
      * @return string
      */
     public function getSpecificationVersion()
     {
         return $this->specificationVersion;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->jsonFile;
     }
 
     /**
@@ -49,8 +63,9 @@ abstract class Schema
             $data = json_decode($data, true);
         }
         // make sure we got an array
-        if (!is_array($data)) {
-            throw new InvalidArgumentException('schema must be given as array or JSON string');
+        if (! is_array($data)) {
+            throw new InvalidArgumentException(
+                'schema must be given as array or JSON string');
         }
         // check which type of file we got and dispatch to derived class constructor
         if (isset($data['swagger'])) {
@@ -64,6 +79,7 @@ abstract class Schema
     }
 
     /**
+     *
      * @param string $path
      * @param string $method
      * @return mixed
@@ -86,7 +102,8 @@ abstract class Schema
             if (isset($this->jsonFile[self::SWAGGER_PATHS][$uri->getPath()][$method])) {
                 return $this->jsonFile[self::SWAGGER_PATHS][$uri->getPath()][$method];
             }
-            throw new HttpMethodNotFoundException("The http method '$method' not found in '$path'");
+            throw new HttpMethodNotFoundException(
+                "The http method '$method' not found in '$path'");
         }
 
         // Try inline parameter
@@ -95,13 +112,15 @@ abstract class Schema
                 continue;
             }
 
-            $pathItemPattern = '~^' . preg_replace('~{(.*?)}~', '(?<\1>[^/]+)', $pathItem) . '$~';
+            $pathItemPattern = '~^' . preg_replace('~{(.*?)}~', '(?<\1>[^/]+)', $pathItem) .
+                '$~';
 
             $matches = [];
             if (preg_match($pathItemPattern, $uri->getPath(), $matches)) {
                 $pathDef = $this->jsonFile[self::SWAGGER_PATHS][$pathItem];
-                if (!isset($pathDef[$method])) {
-                    throw new HttpMethodNotFoundException("The http method '$method' not found in '$path'");
+                if (! isset($pathDef[$method])) {
+                    throw new HttpMethodNotFoundException(
+                        "The http method '$method' not found in '$path'");
                 }
 
                 $parametersPathMethod = [];
@@ -115,7 +134,8 @@ abstract class Schema
                     $parametersPath = $pathDef[self::SWAGGER_PARAMETERS];
                 }
 
-                $this->validateArguments('path', array_merge($parametersPathMethod, $parametersPath), $matches);
+                $this->validateArguments('path',
+                    array_merge($parametersPathMethod, $parametersPath), $matches);
 
                 return $pathDef[$method];
             }
@@ -125,6 +145,7 @@ abstract class Schema
     }
 
     /**
+     *
      * @param string $path
      * @param string $method
      * @param string $status
@@ -140,19 +161,23 @@ abstract class Schema
     {
         $structure = $this->getPathDefinition($path, $method);
 
-        if (!isset($structure['responses']["200"])) {
-            $structure['responses']["200"] = ["description" => "Auto Generated OK"];
+        if (! isset($structure['responses']["200"])) {
+            $structure['responses']["200"] = [
+                "description" => "Auto Generated OK"
+            ];
         }
 
         $verifyStatus = $status;
-        if (!isset($structure['responses'][$verifyStatus])) {
+        if (! isset($structure['responses'][$verifyStatus])) {
             $verifyStatus = 'default';
-            if (!isset($structure['responses'][$verifyStatus])) {
-                throw new InvalidDefinitionException("Could not found status code '$status' in '$path' and '$method'");
+            if (! isset($structure['responses'][$verifyStatus])) {
+                throw new InvalidDefinitionException(
+                    "Could not found status code '$status' in '$path' and '$method'");
             }
         }
 
-        return Body::getInstance($this, "$method $status $path", $structure['responses'][$verifyStatus]);
+        return Body::getInstance($this, "$method $status $path",
+            $structure['responses'][$verifyStatus]);
     }
 
     /**
@@ -169,9 +194,13 @@ abstract class Schema
     abstract public function getServerUrl();
 
     /**
-     * @param $parameterIn
-     * @param $parameters
-     * @param $arguments
+     *
+     * @param
+     *            $parameterIn
+     * @param
+     *            $parameters
+     * @param
+     *            $arguments
      * @throws DefinitionNotFoundException
      * @throws InvalidDefinitionException
      * @throws NotMatchedException
@@ -181,7 +210,9 @@ abstract class Schema
     abstract public function getBasePath();
 
     /**
-     * @param $name
+     *
+     * @param
+     *            $name
      * @return mixed
      * @throws DefinitionNotFoundException
      * @throws InvalidDefinitionException
@@ -189,8 +220,11 @@ abstract class Schema
     abstract public function getDefinition($name);
 
     /**
-     * @param $path
-     * @param $method
+     *
+     * @param
+     *            $path
+     * @param
+     *            $method
      * @return Body
      * @throws HttpMethodNotFoundException
      * @throws PathNotFoundException

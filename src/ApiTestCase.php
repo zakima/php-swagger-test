@@ -1,5 +1,4 @@
 <?php
-
 namespace ByJG\ApiTools;
 
 use ByJG\ApiTools\Base\Schema;
@@ -16,12 +15,15 @@ use PHPUnit\Framework\TestCase;
 
 abstract class ApiTestCase extends TestCase
 {
+
     /**
+     *
      * @var Schema
      */
     protected $schema;
 
     /**
+     *
      * @var AbstractRequester
      */
     protected $requester = null;
@@ -38,12 +40,22 @@ abstract class ApiTestCase extends TestCase
         $this->schema = $schema;
     }
 
+    /**
+     *
+     * @return \ByJG\ApiTools\Base\Schema
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
+
     public function setRequester(AbstractRequester $requester)
     {
         $this->requester = $requester;
     }
 
     /**
+     *
      * @return AbstractRequester
      */
     protected function getRequester()
@@ -55,8 +67,11 @@ abstract class ApiTestCase extends TestCase
     }
 
     /**
-     * @param string $method The HTTP Method: GET, PUT, DELETE, POST, etc
-     * @param string $path The REST path call
+     *
+     * @param string $method
+     *            The HTTP Method: GET, PUT, DELETE, POST, etc
+     * @param string $path
+     *            The REST path call
      * @param int $statusExpected
      * @param array|null $query
      * @param array|null $requestBody
@@ -72,17 +87,11 @@ abstract class ApiTestCase extends TestCase
      * @throws MessageException
      * @deprecated Use assertRequest instead
      */
-    protected function makeRequest(
-        $method,
-        $path,
-        $statusExpected = 200,
-        $query = null,
-        $requestBody = null,
-        $requestHeader = []
-    ) {
+    protected function makeRequest($method, $path, $statusExpected = 200, $query = null,
+        $requestBody = null, $requestHeader = [])
+    {
         $this->checkSchema();
-        $body = $this->requester
-            ->withSchema($this->schema)
+        $body = $this->requester->withSchema($this->schema)
             ->withMethod($method)
             ->withPath($path)
             ->withQuery($query)
@@ -101,6 +110,7 @@ abstract class ApiTestCase extends TestCase
     }
 
     /**
+     *
      * @param AbstractRequester $request
      * @return Response
      * @throws DefinitionNotFoundException
@@ -115,13 +125,14 @@ abstract class ApiTestCase extends TestCase
     public function assertRequest(AbstractRequester $request)
     {
         // Add own schema if nothing is passed.
-        if (!$request->hasSchema()) {
+        if (! $request->hasSchema()) {
             $this->checkSchema();
             $request = $request->withSchema($this->schema);
         }
 
         // Request based on the Swagger Request definitios
         $body = $request->send();
+        // $GLOBALS['swaggerTest_responseBody'] = $body->getBody()->getContents();
 
         // Note:
         // This code is only reached if the send is successful and
@@ -133,12 +144,14 @@ abstract class ApiTestCase extends TestCase
     }
 
     /**
+     *
      * @throws GenericSwaggerException
      */
     protected function checkSchema()
     {
-        if (!$this->schema) {
-            throw new GenericSwaggerException('You have to configure a schema for either the request or the testcase');
+        if (! $this->schema) {
+            throw new GenericSwaggerException(
+                'You have to configure a schema for either the request or the testcase');
         }
     }
 }

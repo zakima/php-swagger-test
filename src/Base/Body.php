@@ -233,6 +233,12 @@ abstract class Body
      */
     protected function matchTypes($name, $schemaArray, $body)
     {
+        $GLOBALS['swaggerTest_Body_matchTypes'] = [
+            'fieldName' => $name,
+            'schemaExpected' => $schemaArray,
+            'responseBody' => $body
+        ];
+
         if (! isset($schemaArray['type'])) {
             return null;
         }
