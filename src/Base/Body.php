@@ -394,11 +394,13 @@ abstract class Body
                 if (isset($schema['$ref'])) {
                     $schema = $this->schema->getDefinition($schema['$ref']);
                     foreach ($schema as $type => $properties) {
-                        foreach ($properties as $item) {
-                            if (isset($item['$ref'])) {
-                                $schema2 = $this->schema->getDefinition($item['$ref']);
-                                $schema = array_merge_recursive($schema[$type][0],
-                                    $schema2);
+                        if ($type == 'allOf') {
+                            foreach ($properties as $item) {
+                                if (isset($item['$ref'])) {
+                                    $schema2 = $this->schema->getDefinition($item['$ref']);
+                                    $schema = array_merge_recursive($schema[$type][0],
+                                        $schema2);
+                                }
                             }
                         }
                     }
