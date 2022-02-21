@@ -398,8 +398,25 @@ abstract class Body
                             foreach ($properties as $item) {
                                 if (isset($item['$ref'])) {
                                     $schema2 = $this->schema->getDefinition($item['$ref']);
-                                    $schema = array_merge_recursive($schema[$type][0],
-                                        $schema2);
+
+                                    if (isset($schema2['allOf'])) {
+                                        foreach ($schema2['allOf'] as $oneOfAll) {
+                                            if (isset($oneOfAll['$ref'])) {
+                                                $schema3 = $this->schema->getDefinition(
+                                                    $oneOfAll['$ref']);
+
+                                                $schema = array_merge_recursive($schema,
+                                                    $schema3);
+                                            } elseif (isset($oneOfAll['properties'])) {
+
+                                                $schema = array_merge_recursive(
+                                                    $schema[$type][0], $oneOfAll);
+                                            }
+                                        }
+                                    } else {
+                                        $schema = array_merge_recursive($schema[$type][0],
+                                            $schema2);
+                                    }
                                 }
                             }
                         }
@@ -408,6 +425,7 @@ abstract class Body
             }
             unset($schema);
             $mergedSchema = array_merge_recursive(...$allOfSchemas);
+
             return $this->matchSchema($name, $mergedSchema, $body);
         }
 
