@@ -233,8 +233,9 @@ abstract class Body
      */
     protected function matchTypes($name, $schemaArray, $body)
     {
-        $GLOBALS['swaggerTest_Body_matchTypes'] = [
+        $GLOBALS['swaggerTest_Body'][__FUNCTION__] = [
             'fieldName' => $name,
+            'test' => __FUNCTION__,
             'schemaExpected' => $schemaArray,
             'responseBody' => $body
         ];
@@ -296,6 +297,13 @@ abstract class Body
      */
     public function matchObjectProperties($name, $schemaArray, $body)
     {
+        $GLOBALS['swaggerTest_Body'][__FUNCTION__] = [
+            'fieldName' => $name,
+            'test' => __FUNCTION__,
+            'schemaExpected' => $schemaArray,
+            'responseBody' => $body
+        ];
+
         if (isset($schemaArray[self::SWAGGER_ADDITIONAL_PROPERTIES]) &&
             ! isset($schemaArray[self::SWAGGER_PROPERTIES])) {
             $schemaArray[self::SWAGGER_PROPERTIES] = [];
@@ -368,6 +376,14 @@ abstract class Body
      */
     protected function matchSchema($name, $schemaArray, $body)
     {
+        $GLOBALS['swaggerTest_Body'][__FUNCTION__] = [
+            'fieldName' => $name,
+            'test' => __FUNCTION__,
+            'schemaExpected' => $schemaArray,
+            'responseBody' => $body,
+            'type' => $this->matchTypes($name, $schemaArray, $body)
+        ];
+
         // Match Single Types
         if ($this->matchTypes($name, $schemaArray, $body)) {
             return true;
@@ -398,8 +414,25 @@ abstract class Body
                             foreach ($properties as $item) {
                                 if (isset($item['$ref'])) {
                                     $schema2 = $this->schema->getDefinition($item['$ref']);
-                                    $schema = array_merge_recursive($schema[$type][0],
-                                        $schema2);
+
+                                    if (isset($schema2['allOf'])) {
+                                        foreach ($schema2['allOf'] as $oneOfAll) {
+                                            if (isset($oneOfAll['$ref'])) {
+                                                $schema3 = $this->schema->getDefinition(
+                                                    $oneOfAll['$ref']);
+                                                
+                                                $schema = array_merge_recursive($schema,
+                                                    $schema3);
+                                            } elseif (isset($oneOfAll['properties'])) {
+                                                
+                                                $schema = array_merge_recursive(
+                                                    $schema[$type][0], $oneOfAll);
+                                            }
+                                        }
+                                    } else {
+                                        $schema = array_merge_recursive($schema[$type][0],
+                                            $schema2);
+                                    }
                                 }
                             }
                         }
