@@ -420,11 +420,9 @@ abstract class Body
                                             if (isset($oneOfAll['$ref'])) {
                                                 $schema3 = $this->schema->getDefinition(
                                                     $oneOfAll['$ref']);
-                                                
                                                 $schema = array_merge_recursive($schema,
                                                     $schema3);
                                             } elseif (isset($oneOfAll['properties'])) {
-                                                
                                                 $schema = array_merge_recursive(
                                                     $schema[$type][0], $oneOfAll);
                                             }
@@ -441,6 +439,7 @@ abstract class Body
             }
             unset($schema);
             $mergedSchema = array_merge_recursive(...$allOfSchemas);
+
             return $this->matchSchema($name, $mergedSchema, $body);
         }
 
