@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class RequiredArgumentNotFound extends BaseException
-{
-
-}
+class RequiredArgumentNotFound extends BaseException {}

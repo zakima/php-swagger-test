@@ -67,9 +67,11 @@ class SwaggerSchema extends Schema
     protected function validateArguments($parameterIn, $parameters, $arguments)
     {
         foreach ($parameters as $parameter) {
-            if ($parameter['in'] === $parameterIn
+            if (
+                $parameter['in'] === $parameterIn
                 && $parameter['type'] === "integer"
-                && filter_var($arguments[$parameter['name']], FILTER_VALIDATE_INT) === false) {
+                && filter_var($arguments[$parameter['name']], FILTER_VALIDATE_INT) === false
+            ) {
                 throw new NotMatchedException('Path expected an integer value');
             }
         }

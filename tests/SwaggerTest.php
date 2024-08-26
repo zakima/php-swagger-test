@@ -15,5 +15,4 @@ class SwaggerTest extends AbstractRequesterTest
         $schema = Schema::getInstance(file_get_contents(__DIR__ . '/rest/swagger.json'));
         $this->setSchema($schema);
     }
-
 }

@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class DefinitionNotFoundException extends BaseException
-{
-
-}
+class DefinitionNotFoundException extends BaseException {}

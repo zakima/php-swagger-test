@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class HttpMethodNotFoundException extends BaseException
-{
-
-}
+class HttpMethodNotFoundException extends BaseException {}

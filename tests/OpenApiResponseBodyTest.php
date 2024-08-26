@@ -93,7 +93,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Value 'notfound' in 'status' not matched in ENUM");
-        
+
         $body = [
             "id" => 10,
             "petId" => 50,
@@ -121,7 +121,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected 'id' to be numeric, but found 'ABC'");
-        
+
         $body = [
             "id" => "ABC",
             "petId" => 50,
@@ -149,7 +149,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("The property(ies) 'more' has not defined in '#/components/schemas/Order'");
-        
+
         $body = [
             "id" => "50",
             "petId" => 50,
@@ -225,7 +225,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Value of property 'complete' is null, but should be of type 'boolean'");
-        
+
         $body = [
             "id"       => 10,
             "status"   => 'placed',
@@ -267,8 +267,8 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected empty body for");
-        
-        $body = ['suppose'=>'not here'];
+
+        $body = ['suppose' => 'not here'];
 
         $responseParameter = self::openApiSchema()->getResponseParameters('/v2/pet/10', 'get', 400);
         $this->assertTrue($responseParameter->match($body));
@@ -451,7 +451,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
         $responseParameter = $this->openApiSchema2()->getResponseParameters('/v2/anyvalue', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
 
-        $body = [ "test" => "10"];
+        $body = ["test" => "10"];
         $responseParameter = $this->openApiSchema2()->getResponseParameters('/v2/anyvalue', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
     }
@@ -477,7 +477,7 @@ class OpenApiResponseBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\InvalidDefinitionException::class);
         $this->expectExceptionMessage("Could not found status code '503'");
-        
+
         $body = [];
         $responseParameter = $this->openApiSchema()->getResponseParameters('/v2/user/login', 'get', 503);
     }

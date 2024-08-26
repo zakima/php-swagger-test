@@ -23,9 +23,7 @@ class ApiRequester extends AbstractRequester
      */
     public function __construct()
     {
-        $this->httpClient = HttpClient::getInstance()
-            ->withNoFollowRedirect();
-
+        $this->httpClient = HttpClient::getInstance()->withNoFollowRedirect();
         parent::__construct();
     }
 

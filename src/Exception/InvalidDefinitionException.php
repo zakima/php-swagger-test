@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class InvalidDefinitionException extends BaseException
-{
-
-}
+class InvalidDefinitionException extends BaseException {}

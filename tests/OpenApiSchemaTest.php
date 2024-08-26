@@ -325,8 +325,7 @@ class OpenApiSchemaTest extends TestCase
                         ],
                     ],
                 ],
-            ]
-            ,
+            ],
             $this->openapiObject->getPathDefinition('/v2/pet/10/uploadImage', 'post')
         );
     }

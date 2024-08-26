@@ -52,7 +52,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Required property 'name'");
-        
+
         $expectedResponse = Response::getInstance(200)
             ->withBody(new MemoryStream(json_encode([
                 "id" => 1,
@@ -132,7 +132,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected empty body for GET 404 /v2/pet/1");
-        
+
         $expectedResponse = Response::getInstance(404)
             ->withBody(new MemoryStream('{"error":"not found"}'));
 
@@ -159,7 +159,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\StatusCodeNotMatchedException::class);
         $this->expectExceptionMessage("Status code not matched: Expected 404, got 522");
-        
+
         $expectedResponse = Response::getInstance(522);
 
         $request = new MockRequester($expectedResponse);
@@ -215,7 +215,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Does not exists header 'X-Test' with value 'Different'");
-        
+
         $expectedResponse = Response::getInstance(200)
             ->withBody(new MemoryStream(json_encode([
                 "id" => 1,
@@ -248,7 +248,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Does not exists header 'X-Test' with value 'Different'");
-        
+
         $expectedResponse = Response::getInstance(200)
             ->withBody(new MemoryStream(json_encode([
                 "id" => 1,
@@ -309,7 +309,7 @@ abstract class AbstractRequesterTest extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Body does not contain 'Doris'");
-        
+
         $expectedResponse = Response::getInstance(200)
             ->withBody(new MemoryStream(json_encode([
                 "id" => 1,

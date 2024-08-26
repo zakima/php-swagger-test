@@ -68,7 +68,7 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Value 'notfound' in 'status' not matched in ENUM");
-        
+
         $body = [
             "id" => 10,
             "petId" => 50,
@@ -95,7 +95,7 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected 'id' to be numeric, but found 'ABC'");
-        
+
         $body = [
             "id" => "ABC",
             "petId" => 50,
@@ -122,7 +122,7 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("The property(ies) 'more' has not defined in '#/definitions/Order'");
-        
+
         $body = [
             "id" => "50",
             "petId" => 50,
@@ -195,7 +195,7 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Value of property 'complete' is null, but should be of type 'boolean'");
-        
+
         $body = [
             "id"       => 10,
             "status"   => 'placed',
@@ -235,8 +235,8 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected empty body for");
-        
-        $body = ['suppose'=>'not here'];
+
+        $body = ['suppose' => 'not here'];
         $responseParameter = self::swaggerSchema()->getResponseParameters('/v2/pet/10', 'get', 400);
         $this->assertTrue($responseParameter->match($body));
     }
@@ -324,7 +324,8 @@ class SwaggerResponseBodyTest extends SwaggerBodyTestCase
     public function testNotMatchResponseBodyWhenValueWithPatterns()
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
-        $this->expectExceptionMessage(<<<'EOL'
+        $this->expectExceptionMessage(
+            <<<'EOL'
 Value '18' in 'age' is not string.  ->
 {
     "description": "successful operation",
@@ -333,7 +334,7 @@ Value '18' in 'age' is not string.  ->
     }
 }
 EOL
-);
+        );
         $allowNullValues = false;
         $body = [
             "date" => "2010-05-11",
@@ -373,7 +374,8 @@ EOL
     public function testMatchResponseBodyWhenValueWithStringPatternError()
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
-        $this->expectExceptionMessage(<<<'EOL'
+        $this->expectExceptionMessage(
+            <<<'EOL'
 Value '20100-05-11' in 'date' not matched in pattern.  ->
 {
     "description": "successful operation",
@@ -382,7 +384,7 @@ Value '20100-05-11' in 'date' not matched in pattern.  ->
     }
 }
 EOL
-);
+        );
 
         $allowNullValues = false;
         $body = [
@@ -404,7 +406,8 @@ EOL
     public function testMatchResponseBodyWhenValueWithNumberPatternError()
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
-        $this->expectExceptionMessage(<<<'EOL'
+        $this->expectExceptionMessage(
+            <<<'EOL'
 Value '9999' in 'age' not matched in pattern.  ->
 {
     "description": "successful operation",
@@ -438,20 +441,20 @@ EOL
     public function testIssue9()
     {
         $body =
-        [
             [
                 [
-                    "isoCode" => "fr",
-                    "label" => "French",
-                    "isDefault" => true
+                    [
+                        "isoCode" => "fr",
+                        "label" => "French",
+                        "isDefault" => true
+                    ],
+                    [
+                        "isoCode" => "br",
+                        "label" => "Brazilian",
+                        "isDefault" => false
+                    ]
                 ],
-                [
-                    "isoCode" => "br",
-                    "label" => "Brazilian",
-                    "isDefault" => false
-                ]
-            ],
-        ];
+            ];
         $responseParameter = $this->swaggerSchema2()->getResponseParameters('/v2/languages', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
     }
@@ -510,7 +513,7 @@ EOL
         $responseParameter = $this->swaggerSchema2()->getResponseParameters('/v2/anyvalue', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
 
-        $body = [ "test" => "10"];
+        $body = ["test" => "10"];
         $responseParameter = $this->swaggerSchema2()->getResponseParameters('/v2/anyvalue', 'get', 200);
         $this->assertTrue($responseParameter->match($body));
     }
@@ -526,7 +529,7 @@ EOL
     {
         $this->expectException(\ByJG\ApiTools\Exception\InvalidDefinitionException::class);
         $this->expectExceptionMessage("Could not found status code '503'");
-        
+
         $body = [];
         $responseParameter = $this->swaggerSchema()->getResponseParameters('/v2/user/login', 'get', 503);
     }

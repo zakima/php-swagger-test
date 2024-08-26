@@ -39,8 +39,8 @@ abstract class TestingTestCase extends ApiTestCase
         $body = [
             'id' => 1,
             'name' => 'Spike',
-            'category' => [ 'id' => 201, 'name' => 'dog'],
-            'tags' => [[ 'id' => 2, 'name' => 'blackwhite']],
+            'category' => ['id' => 201, 'name' => 'dog'],
+            'tags' => [['id' => 2, 'name' => 'blackwhite']],
             'photoUrls' => [],
             'status' => 'available'
         ];
@@ -79,15 +79,15 @@ abstract class TestingTestCase extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Required property 'name'");
-        
+
         $request = new ApiRequester();
         $request
             ->withMethod('POST')
             ->withPath("/pet")
             ->withRequestBody([
                 'id' => 1,
-                'category' => [ 'id' => 201, 'name' => 'dog'],
-                'tags' => [[ 'id' => 2, 'name' => 'blackwhite']],
+                'category' => ['id' => 201, 'name' => 'dog'],
+                'tags' => [['id' => 2, 'name' => 'blackwhite']],
                 'photoUrls' => [],
                 'status' => 'available'
             ]);
@@ -107,7 +107,7 @@ abstract class TestingTestCase extends ApiTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Expected empty body");
-        
+
         $request = new ApiRequester();
         $request
             ->withMethod('POST')
@@ -115,8 +115,8 @@ abstract class TestingTestCase extends ApiTestCase
             ->withRequestBody([
                 'id' => 999, // <== The API will generate an invalid response for this ID
                 'name' => 'Spike',
-                'category' => [ 'id' => 201, 'name' => 'dog'],
-                'tags' => [[ 'id' => 2, 'name' => 'blackwhite']],
+                'category' => ['id' => 201, 'name' => 'dog'],
+                'tags' => [['id' => 2, 'name' => 'blackwhite']],
                 'photoUrls' => [],
                 'status' => 'available'
             ]);
@@ -141,5 +141,4 @@ abstract class TestingTestCase extends ApiTestCase
 
         $this->assertRequest($request);
     }
-
 }

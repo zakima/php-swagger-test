@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class GenericSwaggerException extends BaseException
-{
-
-}
+class GenericSwaggerException extends BaseException {}

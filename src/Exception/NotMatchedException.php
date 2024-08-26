@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class NotMatchedException extends BaseException
-{
-
-}
+class NotMatchedException extends BaseException {}

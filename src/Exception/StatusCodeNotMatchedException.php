@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class StatusCodeNotMatchedException extends BaseException
-{
-
-}
+class StatusCodeNotMatchedException extends BaseException {}

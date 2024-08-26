@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class PathNotFoundException extends BaseException
-{
-
-}
+class PathNotFoundException extends BaseException {}

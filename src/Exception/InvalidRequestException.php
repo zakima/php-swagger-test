@@ -2,7 +2,4 @@
 
 namespace ByJG\ApiTools\Exception;
 
-class InvalidRequestException extends BaseException
-{
-
-}
+class InvalidRequestException extends BaseException {}

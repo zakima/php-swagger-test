@@ -44,7 +44,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\RequiredArgumentNotFound::class);
         $this->expectExceptionMessage("The body is required");
-        
+
         $requestParameter = self::openApiSchema()->getRequestParameters('/v2/store/order', 'post');
         $this->assertTrue($requestParameter->match(null));
     }
@@ -64,7 +64,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\InvalidDefinitionException::class);
         $this->expectExceptionMessage("Body is passed but there is no request body definition");
-        
+
         $body = [
             "id" => "10",
             "petId" => 50,
@@ -90,7 +90,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Path expected an integer value");
-        
+
         self::openApiSchema()->getRequestParameters('/v2/pet/STRING', 'get');
         $this->assertTrue(true);
     }
@@ -120,7 +120,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Path expected an integer value");
-        
+
         self::openApiSchema3()->getRequestParameters('/tests/STRING?count=20&offset=2', 'get');
         $this->assertTrue(true);
     }
@@ -141,7 +141,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Required property");
-        
+
         $body = [
             "id" => "10",
             "status" => "pending",
@@ -168,7 +168,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Value of property 'name' is null, but should be of type 'string'");
-        
+
         $body = [
             "id" => "10",
             "status" => "pending",
@@ -270,7 +270,7 @@ class OpenApiRequestBodyTest extends OpenApiBodyTestCase
     {
         $this->expectException(\ByJG\ApiTools\Exception\NotMatchedException::class);
         $this->expectExceptionMessage("Required property 'user_uuid'");
-        
+
         // Missing Request
         $body = [
             "wallet_uuid" => "502a1aa3-5239-4d4b-af09-4dc24ac5f034",

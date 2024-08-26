@@ -87,9 +87,11 @@ class OpenApiSchema extends Schema
                 }
                 $parameter = $this->jsonFile[self::SWAGGER_COMPONENTS][self::SWAGGER_PARAMETERS][$paramParts[3]];
             }
-            if ($parameter['in'] === $parameterIn &&
+            if (
+                $parameter['in'] === $parameterIn &&
                 $parameter['schema']['type'] === "integer"
-                && filter_var($arguments[$parameter['name']], FILTER_VALIDATE_INT) === false) {
+                && filter_var($arguments[$parameter['name']], FILTER_VALIDATE_INT) === false
+            ) {
                 throw new NotMatchedException('Path expected an integer value');
             }
         }
