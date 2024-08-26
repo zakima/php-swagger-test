@@ -11,6 +11,7 @@ use ByJG\ApiTools\OpenApi\OpenApiResponseBody;
 use ByJG\ApiTools\OpenApi\OpenApiSchema;
 use ByJG\ApiTools\Swagger\SwaggerResponseBody;
 use ByJG\ApiTools\Swagger\SwaggerSchema;
+use Exception;
 use InvalidArgumentException;
 
 abstract class Body
@@ -262,6 +263,61 @@ abstract class Body
     }
 
     /**
+     * 
+     * @param array &$schemaArray 
+     * @param array $values 
+     * @return void 
+     * @throws DefinitionNotFoundException 
+     * @throws InvalidDefinitionException 
+     */
+    protected function addPropertiesToSchema(array &$schemaArray, array $values)
+    {
+        if (is_array($values)) {
+            foreach ($values as $key => $value) {
+                switch ($key) {
+                    case '$ref':
+                        $decode = $this->schema->getDefinition($value);
+                        $this->decodeSchemaAllOf($decode);
+                        $this->addPropertiesToSchema($schemaArray, $decode);
+                        break;
+
+                    case self::SWAGGER_PROPERTIES:
+                        foreach ($value as $k => $v) {
+                            $schemaArray[self::SWAGGER_PROPERTIES][$k] = $v;
+                        }
+                        break;
+
+                    case 'type':
+                        // nothitng to do
+                        break;
+
+                    default:
+                        throw new Exception("Not implemented");
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * 
+     * @param array &$schemaArray 
+     * @return void 
+     * @throws DefinitionNotFoundException 
+     * @throws InvalidDefinitionException 
+     */
+    protected function decodeSchemaAllOf(array &$schemaArray)
+    {
+        if (!empty($schemaArray['allOf'])) {
+            $allOf = $schemaArray['allOf'];
+            unset($schemaArray['allOf']);
+            foreach ($allOf as $values) {
+                $this->addPropertiesToSchema($schemaArray, $values);
+            }
+        }
+    }
+
+    /**
      * @param string $name
      * @param array $schemaArray
      * @param string $body
@@ -274,6 +330,8 @@ abstract class Body
      */
     public function matchObjectProperties($name, $schemaArray, $body)
     {
+        $this->decodeSchemaAllOf($schemaArray);
+
         if (isset($schemaArray[self::SWAGGER_ADDITIONAL_PROPERTIES]) && !isset($schemaArray[self::SWAGGER_PROPERTIES])) {
             $schemaArray[self::SWAGGER_PROPERTIES] = [];
         }
