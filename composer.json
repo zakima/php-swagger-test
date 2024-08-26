@@ -1,44 +1,26 @@
 {
-	"name": "mdc/swagger-test",
-	"description": "A set of tools for testing your REST calls based on the Swagger or OpenAPI documentation using PHPUnit",
-	"version": "1.0.3",
-	"minimum-stability": "stable",
-	"prefer-stable": true,
-	"license": "MIT",
-	"authors": [
-		{
-			"name": "João Gilberto Magalhães",
-			"email": "joao@byjg.com.br",
-			"role": "author"
-		},
-		{
-			"name": "Marco De Carli",
-			"email": "m.decarli@zkm.it",
-			"role": "fixer"
-		},
-		{
-			"name": "Alessandro De Vita",
-			"email": "alesdevita@tiscali.it",
-			"role": "fixer"
-		}
-	],
-	"require": {
-		"byjg/webrequest": "^2.0.2",
-		"php": ">=7.2",
-		"ext-json": "*"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "^5.7|^7.4",
-		"byjg/restserver": "4.0.*"
-	},
-	"autoload": {
-		"psr-4": {
-			"ByJG\\ApiTools\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Test\\": "tests/"
-		}
-	}
+  "name": "mdc/swagger-test",
+  "description": "A set of tools for testing your REST calls based on the Swagger or OpenAPI documentation using PHPUnit",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "license": "MIT",
+  "require": {
+    "byjg/webrequest": "4.9.*",
+    "php": ">=7.4",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.7.*|7.4.*|^9.5",
+    "byjg/restserver": "4.9.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ByJG\\ApiTools\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Test\\": "tests/"
+    }
+  }
 }
