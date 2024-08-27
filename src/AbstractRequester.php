@@ -229,6 +229,8 @@ abstract class AbstractRequester
                 $requestBody = json_decode($requestBody, true);
             } elseif (strpos($contentType, "multipart/") !== false) {
                 $requestBody = $this->parseMultiPartForm($contentType, $requestBody);
+            } elseif (strpos($contentType, "application/x-www-form-urlencoded") !== false) {
+                $requestBody = $this->parseApplicationForm($contentType, $requestBody);
             } else {
                 throw new InvalidRequestException("Cannot handle Content Type '{$contentType}'");
             }
@@ -280,6 +282,23 @@ abstract class AbstractRequester
         return $response;
     }
 
+    /**
+     *
+     * @param string $contentType
+     * @param string $body
+     * @return string[]
+     */
+    protected static function parseApplicationForm($contentType, $body)
+    {
+        $matchRequest = [];
+        foreach (explode('&', $body) as $option) {
+            @list($k, $v) = explode('=', $option);
+            $matchRequest[$k] = urldecode($v);
+        }
+
+        return $matchRequest;
+    }
+
     protected function parseMultiPartForm($contentType, $body)
     {
         $matchRequest = [];
@@ -311,5 +330,17 @@ abstract class AbstractRequester
         }
 
         return $matchRequest;
+    }
+
+    public function debugRequest()
+    {
+        print_r(
+            [
+                'method' => $this->psr7Request->getMethod(),
+                'uri' => $this->psr7Request->getUri(),
+                'headers' => $this->psr7Request->getHeaders(),
+                'body' => $this->psr7Request->getBody()
+            ]
+        );
     }
 }
