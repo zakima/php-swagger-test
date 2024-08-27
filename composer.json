@@ -1,7 +1,7 @@
 {
   "name": "mdc/swagger-test",
   "description": "A set of tools for testing your REST calls based on the Swagger or OpenAPI documentation using PHPUnit",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "license": "MIT",
